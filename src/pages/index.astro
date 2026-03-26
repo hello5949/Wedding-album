@@ -1,17 +1,73 @@
 ---
+import MainLayout from "../layouts/MainLayout.astro";
+import MotionHero from "../components/MotionHero";
+import { galleryPhotos, heroPhoto } from "../data/gallery";
 
+const base = import.meta.env.BASE_URL;
+const previewPhotos = galleryPhotos.slice(0, 6).map((photo) => ({
+  ...photo,
+  src: `${base}${photo.path}`,
+}));
+const heroSrc = `${base}${heroPhoto.path}`;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout
+  title="Wedding Album"
+  description="A minimal wedding gallery built with Astro and tailored for GitHub Pages."
+>
+  <section class="hero-shell">
+    <div class="hero-media">
+      <img
+        src={heroSrc}
+        alt={heroPhoto.alt}
+        class="hero-image"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+    <div class="hero-copy">
+      <MotionHero
+        title="Wedding Album"
+        eyebrow="A quiet collection of light, distance, and memory."
+        body="A minimal wedding gallery designed to be easy to browse on any screen, anywhere."
+      />
+    </div>
+  </section>
+
+  <section class="section-grid">
+    <div class="section-copy">
+      <p class="section-label">Story</p>
+      <h2>Large images, restrained details, and generous space.</h2>
+      <p>
+        The first version keeps the structure intentionally simple: a calm landing
+        page, a full gallery, and lightweight motion that does not compete with
+        the photography.
+      </p>
+    </div>
+    <div class="section-copy">
+      <p class="section-label">Browse</p>
+      <p>
+        Optimized for GitHub Pages, with a reproducible photo sync script so you
+        can replace or add images later without rebuilding the page structure by
+        hand.
+      </p>
+      <div class="action-row">
+        <a class="button-primary" href={`${base}gallery/`}>Open Gallery</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="preview-grid">
+    {previewPhotos.map((photo) => (
+      <figure class="preview-card">
+        <img
+          src={photo.src}
+          alt={photo.alt}
+          class="preview-image"
+          loading="lazy"
+          decoding="async"
+        />
+      </figure>
+    ))}
+  </section>
+</MainLayout>

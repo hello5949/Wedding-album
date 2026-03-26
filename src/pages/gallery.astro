@@ -1,0 +1,29 @@
+---
+import MainLayout from "../layouts/MainLayout.astro";
+import GalleryLightbox from "../components/GalleryLightbox";
+import { galleryPhotos } from "../data/gallery";
+
+const base = import.meta.env.BASE_URL;
+const photos = galleryPhotos.map((photo) => ({
+  ...photo,
+  src: `${base}${photo.path}`,
+}));
+---
+
+<MainLayout
+  title="Gallery"
+  description="Full wedding gallery with a quiet grid layout and lightbox view."
+>
+  <section class="gallery-header">
+    <div>
+      <p class="section-label">Gallery</p>
+      <h1>Thirty frames, held with as little interface as possible.</h1>
+    </div>
+    <p class="gallery-intro">
+      Tap or click any image to open it. Navigation supports keyboard arrows and
+      escape as well.
+    </p>
+  </section>
+
+  <GalleryLightbox client:load photos={photos} />
+</MainLayout>

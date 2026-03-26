@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# local source photos
+drive-download-20260326T151214Z-1-001/
