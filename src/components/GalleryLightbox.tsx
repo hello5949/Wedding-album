@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 
 type Photo = {
   alt: string;
-  path: string;
+  original: string;
   src: string;
+  thumb: string;
 };
 
 type GalleryLightboxProps = {
@@ -16,9 +17,15 @@ const swipeThreshold = 70;
 export default function GalleryLightbox({ photos }: GalleryLightboxProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [isOriginalOpen, setIsOriginalOpen] = useState(false);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isOriginalOpen) {
+        setIsOriginalOpen(false);
+        return;
+      }
+
       if (event.key === "ArrowRight") {
         goToNext();
       }
@@ -30,7 +37,7 @@ export default function GalleryLightbox({ photos }: GalleryLightboxProps) {
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  });
+  }, [isOriginalOpen]);
 
   const goToIndex = (index: number) => {
     if (index === activeIndex) {
@@ -38,16 +45,19 @@ export default function GalleryLightbox({ photos }: GalleryLightboxProps) {
     }
 
     setDirection(index > activeIndex ? 1 : -1);
+    setIsOriginalOpen(false);
     setActiveIndex(index);
   };
 
   const goToNext = () => {
     setDirection(1);
+    setIsOriginalOpen(false);
     setActiveIndex((current) => (current + 1) % photos.length);
   };
 
   const goToPrevious = () => {
     setDirection(-1);
+    setIsOriginalOpen(false);
     setActiveIndex((current) => (current - 1 + photos.length) % photos.length);
   };
 
@@ -68,7 +78,7 @@ export default function GalleryLightbox({ photos }: GalleryLightboxProps) {
         <div className="carousel-viewport">
           <AnimatePresence custom={direction} mode="wait">
             <motion.figure
-              key={activePhoto.path}
+              key={activePhoto.src}
               className="carousel-figure"
               custom={direction}
               initial={{ opacity: 0, x: direction > 0 ? 80 : -80 }}
@@ -89,13 +99,20 @@ export default function GalleryLightbox({ photos }: GalleryLightboxProps) {
                 }
               }}
             >
-              <img
-                src={activePhoto.src}
-                alt={activePhoto.alt}
-                className="carousel-image"
-                loading="eager"
-                decoding="async"
-              />
+              <button
+                type="button"
+                className="carousel-image-button"
+                onClick={() => setIsOriginalOpen(true)}
+                aria-label={`Open full resolution version of ${activePhoto.alt}`}
+              >
+                <img
+                  src={activePhoto.src}
+                  alt={activePhoto.alt}
+                  className="carousel-image"
+                  loading="eager"
+                  decoding="async"
+                />
+              </button>
               <figcaption className="carousel-meta">
                 <div>
                   <p className="carousel-index">
@@ -104,7 +121,7 @@ export default function GalleryLightbox({ photos }: GalleryLightboxProps) {
                   </p>
                   <p className="carousel-caption">{activePhoto.alt}</p>
                 </div>
-                <p className="carousel-hint">Swipe or use arrow keys</p>
+                <p className="carousel-hint">Swipe, use arrow keys, or tap image for full resolution</p>
               </figcaption>
             </motion.figure>
           </AnimatePresence>
@@ -123,7 +140,7 @@ export default function GalleryLightbox({ photos }: GalleryLightboxProps) {
       <div className="carousel-thumbnails" aria-label="Choose a photo">
         {photos.map((photo, index) => (
           <button
-            key={photo.path}
+            key={photo.src}
             type="button"
             className={`thumbnail-card${index === activeIndex ? " is-active" : ""}`}
             onClick={() => goToIndex(index)}
@@ -131,7 +148,7 @@ export default function GalleryLightbox({ photos }: GalleryLightboxProps) {
             aria-pressed={index === activeIndex}
           >
             <img
-              src={photo.src}
+              src={photo.thumb}
               alt=""
               className="thumbnail-image"
               loading="lazy"
@@ -140,6 +157,55 @@ export default function GalleryLightbox({ photos }: GalleryLightboxProps) {
           </button>
         ))}
       </div>
+
+      <AnimatePresence>
+        {isOriginalOpen ? (
+          <motion.div
+            className="original-viewer"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            onClick={() => setIsOriginalOpen(false)}
+          >
+            <button
+              type="button"
+              className="original-close"
+              onClick={() => setIsOriginalOpen(false)}
+              aria-label="Close full resolution image"
+            >
+              Close
+            </button>
+            <motion.figure
+              className="original-figure"
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <img
+                src={activePhoto.original}
+                alt={activePhoto.alt}
+                className="original-image"
+                loading="eager"
+                decoding="async"
+              />
+              <figcaption className="original-meta">
+                <p className="original-caption">{activePhoto.alt}</p>
+                <a
+                  className="original-link"
+                  href={activePhoto.original}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open Original File
+                </a>
+              </figcaption>
+            </motion.figure>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </section>
   );
 }
