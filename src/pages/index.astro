@@ -13,8 +13,8 @@ const heroSrc = withBase(heroPhoto.src, base);
 ---
 
 <MainLayout
-  title="Wedding Album"
-  description="A minimal wedding gallery built with Astro and tailored for GitHub Pages."
+  title="婚紗相簿"
+  description="簡單留白的婚紗相簿，適合在任何裝置上安靜瀏覽。"
 >
   <section class="hero-shell">
     <div class="hero-media">
@@ -28,32 +28,28 @@ const heroSrc = withBase(heroPhoto.src, base);
     </div>
     <div class="hero-copy">
       <MotionHero
-        title="Wedding Album"
-        eyebrow="A quiet collection of light, distance, and memory."
-        body="A minimal wedding gallery designed to be easy to browse on any screen, anywhere."
+        title="婚紗相簿"
+        eyebrow="把喜歡的樣子，好好留住。"
+        body="用簡單的版面，慢慢看完這一段屬於我們的光與風景。"
       />
     </div>
   </section>
 
   <section class="section-grid">
     <div class="section-copy">
-      <p class="section-label">Story</p>
-      <h2>Large images, restrained details, and generous space.</h2>
+      <p class="section-label">關於</p>
+      <h2>把畫面留給照片，把情緒留給當下。</h2>
       <p>
-        The first version keeps the structure intentionally simple: a calm landing
-        page, a full gallery, and lightweight motion that does not compete with
-        the photography.
+        沒有太多裝飾，只有留白、光線，和那些值得反覆回看的瞬間。
       </p>
     </div>
     <div class="section-copy">
-      <p class="section-label">Browse</p>
+      <p class="section-label">瀏覽</p>
       <p>
-        Optimized for GitHub Pages, with a reproducible photo sync script so you
-        can replace or add images later without rebuilding the page structure by
-        hand.
+        手機可滑動查看，桌機也能順暢切換；想看細節時，再點開原始畫質版本。
       </p>
       <div class="action-row">
-        <a class="button-primary" href={withBase("gallery/", base)}>Open Gallery</a>
+        <a class="button-primary" href={withBase("gallery/", base)}>開始瀏覽</a>
       </div>
     </div>
   </section>

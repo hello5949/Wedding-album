@@ -14,6 +14,38 @@ const thumbDir = path.join(outputDir, "thumbs");
 const dataFile = path.join(rootDir, "src", "data", "gallery.ts");
 const webWidth = 1800;
 const thumbWidth = 480;
+const captions = [
+  "晨光裡的回眸",
+  "安靜相依",
+  "剛剛好的笑意",
+  "風景與我們",
+  "靠近一點點",
+  "眼神停留的瞬間",
+  "輕輕牽著手",
+  "把溫柔收進畫面",
+  "白紗與光",
+  "笑著看向你",
+  "不需要太多言語",
+  "一起走過的節奏",
+  "把日常拍成浪漫",
+  "留白裡的默契",
+  "剛好的距離",
+  "你在我身旁",
+  "安靜也很動人",
+  "風吹過來的時候",
+  "彼此眼中的光",
+  "把此刻留住",
+  "慢慢走 慢慢愛",
+  "今天很值得紀念",
+  "像電影的一格",
+  "把喜歡寫在臉上",
+  "微光下的擁抱",
+  "一點點俏皮",
+  "柔軟的輪廓",
+  "看向未來的方向",
+  "並肩的安心感",
+  "故事停在最美的地方",
+];
 
 await mkdir(outputDir, { recursive: true });
 await mkdir(originalDir, { recursive: true });
@@ -54,7 +86,7 @@ if (photoSourceDir === sourceDir) {
 const entries = files
   .map(
     (file, index) =>
-      `  { src: "photos/web/${file}", thumb: "photos/thumbs/${file}", original: "photos/original/${file}", alt: "Wedding portrait ${String(index + 1).padStart(2, "0")}" },`,
+      `  { src: "photos/web/${file}", thumb: "photos/thumbs/${file}", original: "photos/original/${file}", alt: "${captions[index] ?? `照片 ${String(index + 1).padStart(2, "0")}`}" },`,
   )
   .join("\n");
 
