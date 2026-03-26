@@ -2,11 +2,12 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import GalleryLightbox from "../components/GalleryLightbox";
 import { galleryPhotos } from "../data/gallery";
+import { withBase } from "../utils/with-base";
 
 const base = import.meta.env.BASE_URL;
 const photos = galleryPhotos.map((photo) => ({
   ...photo,
-  src: `${base}${photo.path}`,
+  src: withBase(photo.path, base),
 }));
 ---
 

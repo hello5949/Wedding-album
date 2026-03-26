@@ -2,13 +2,14 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import MotionHero from "../components/MotionHero";
 import { galleryPhotos, heroPhoto } from "../data/gallery";
+import { withBase } from "../utils/with-base";
 
 const base = import.meta.env.BASE_URL;
 const previewPhotos = galleryPhotos.slice(0, 6).map((photo) => ({
   ...photo,
-  src: `${base}${photo.path}`,
+  src: withBase(photo.path, base),
 }));
-const heroSrc = `${base}${heroPhoto.path}`;
+const heroSrc = withBase(heroPhoto.path, base);
 ---
 
 <MainLayout
@@ -52,7 +53,7 @@ const heroSrc = `${base}${heroPhoto.path}`;
         hand.
       </p>
       <div class="action-row">
-        <a class="button-primary" href={`${base}gallery/`}>Open Gallery</a>
+        <a class="button-primary" href={withBase("gallery/", base)}>Open Gallery</a>
       </div>
     </div>
   </section>
