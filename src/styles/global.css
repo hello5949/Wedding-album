@@ -133,6 +133,7 @@ img {
   width: 6.5rem;
   accent-color: #6e655d;
   cursor: pointer;
+  touch-action: none;
 }
 
 .audio-toggle {
@@ -442,7 +443,7 @@ img {
 
   .home-slogan-text,
   .gallery-header h1 {
-    font-size: clamp(1.6rem, 6vw, 2.8rem);
+    font-size: clamp(1.3rem, 5vw, 2.2rem);
   }
 
   .carousel-audio-controls {

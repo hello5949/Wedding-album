@@ -29,6 +29,14 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const currentTrackRef = useRef<string>("");
 
+  const updateVolume = (nextVolume: number) => {
+    setVolume(nextVolume);
+
+    if (audioRef.current) {
+      audioRef.current.volume = nextVolume;
+    }
+  };
+
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape" && isOriginalOpen) {
@@ -136,7 +144,12 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
       {activeTrack ? <audio ref={audioRef} autoPlay loop preload="auto" /> : null}
       {activeTrack ? (
         <div className="carousel-audio-controls">
-          <label className="audio-volume" aria-label="Background music volume">
+          <label
+            className="audio-volume"
+            aria-label="Background music volume"
+            onPointerDown={(event) => event.stopPropagation()}
+            onTouchStart={(event) => event.stopPropagation()}
+          >
             <span className="audio-volume-label" aria-hidden="true">
               Vol
             </span>
@@ -147,7 +160,8 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
               step="1"
               value={Math.round(volume * 100)}
               className="audio-volume-slider"
-              onChange={(event) => setVolume(Number(event.target.value) / 100)}
+              onInput={(event) => updateVolume(Number(event.currentTarget.value) / 100)}
+              onChange={(event) => updateVolume(Number(event.currentTarget.value) / 100)}
               aria-label="Background music volume"
             />
           </label>
@@ -155,6 +169,7 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
             type="button"
             className="audio-toggle"
             onClick={() => setIsMuted((current) => !current)}
+            onPointerDown={(event) => event.stopPropagation()}
             aria-pressed={isMuted}
             aria-label={isMuted ? "Unmute background music" : "Mute background music"}
           >
