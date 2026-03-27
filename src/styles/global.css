@@ -111,15 +111,17 @@ img {
 }
 
 .audio-toggle {
-  padding: 0.58rem 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
   border: 1px solid rgba(47, 41, 38, 0.14);
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.56);
   color: var(--color-muted);
   cursor: pointer;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-size: 0.68rem;
   transition:
     transform 180ms ease,
     background-color 180ms ease,
@@ -130,6 +132,17 @@ img {
   transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.82);
   color: var(--color-text);
+}
+
+.audio-toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.audio-toggle-svg {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
 .carousel-stage {

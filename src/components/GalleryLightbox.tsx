@@ -142,7 +142,37 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
             aria-pressed={isMuted}
             aria-label={isMuted ? "Unmute background music" : "Mute background music"}
           >
-            {isMuted ? "Unmute" : "Mute"}
+            <span className="audio-toggle-icon" aria-hidden="true">
+              {isMuted ? (
+                <svg viewBox="0 0 24 24" className="audio-toggle-svg">
+                  <path
+                    d="M14.5 5.5v13a.75.75 0 0 1-1.28.53L8.69 14.5H5.25A1.25 1.25 0 0 1 4 13.25v-2.5A1.25 1.25 0 0 1 5.25 9.5h3.44l4.53-4.53a.75.75 0 0 1 1.28.53Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="m18 9 4 4m0-4-4 4"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeWidth="1.8"
+                  />
+                </svg>
+              ) : (
+                <svg viewBox="0 0 24 24" className="audio-toggle-svg">
+                  <path
+                    d="M14.5 5.5v13a.75.75 0 0 1-1.28.53L8.69 14.5H5.25A1.25 1.25 0 0 1 4 13.25v-2.5A1.25 1.25 0 0 1 5.25 9.5h3.44l4.53-4.53a.75.75 0 0 1 1.28.53Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M18 9.2a4.6 4.6 0 0 1 0 5.6m2.1-8.4a8 8 0 0 1 0 11.2"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeWidth="1.8"
+                  />
+                </svg>
+              )}
+            </span>
           </button>
         </div>
       ) : null}
