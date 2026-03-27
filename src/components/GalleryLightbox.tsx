@@ -24,6 +24,7 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isOriginalOpen, setIsOriginalOpen] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const currentTrackRef = useRef<string>("");
 
@@ -89,6 +90,9 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
       currentTrackRef.current = activeTrack.src;
     }
 
+    audio.volume = 0.6;
+    audio.muted = isMuted;
+
     let isDisposed = false;
 
     const playAudio = async () => {
@@ -124,11 +128,24 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
       window.removeEventListener("keydown", onFirstInteraction);
       window.removeEventListener("touchstart", onFirstInteraction);
     };
-  }, [activeTrack]);
+  }, [activeTrack, isMuted]);
 
   return (
     <section className="carousel-shell" aria-label="Wedding gallery carousel">
       {activeTrack ? <audio ref={audioRef} autoPlay loop preload="auto" /> : null}
+      {activeTrack ? (
+        <div className="carousel-audio-controls">
+          <button
+            type="button"
+            className="audio-toggle"
+            onClick={() => setIsMuted((current) => !current)}
+            aria-pressed={isMuted}
+            aria-label={isMuted ? "Unmute background music" : "Mute background music"}
+          >
+            {isMuted ? "Unmute" : "Mute"}
+          </button>
+        </div>
+      ) : null}
       <div className="carousel-stage">
         <button
           type="button"
