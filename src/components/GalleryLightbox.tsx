@@ -82,6 +82,28 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
     }
   };
 
+  const attemptPlayback = async () => {
+    const audio = audioRef.current;
+    if (!audio) {
+      return false;
+    }
+
+    try {
+      const graph = await ensureAudioGraph();
+
+      if (graph) {
+        graph.gainNode.gain.value = isMuted ? 0 : volume;
+      } else {
+        audio.volume = isMuted ? 0 : volume;
+      }
+
+      await audio.play();
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape" && isOriginalOpen) {
@@ -147,50 +169,44 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
     audio.volume = 1;
     audio.muted = false;
 
-    const syncGain = async () => {
-      const graph = await ensureAudioGraph();
-
-      if (graph) {
-        graph.gainNode.gain.value = isMuted ? 0 : volume;
-        return;
-      }
-
-      audio.volume = isMuted ? 0 : volume;
-    };
-
     let isDisposed = false;
-
-    const playAudio = async () => {
-      try {
-        await syncGain();
-        await audio.play();
-        return true;
-      } catch {
-        return false;
-      }
-    };
 
     const onFirstInteraction = () => {
       if (isDisposed) {
         return;
       }
 
-      void playAudio();
+      void attemptPlayback();
     };
 
-    void playAudio().then((didPlay) => {
+    const onCanPlay = () => {
+      if (isDisposed) {
+        return;
+      }
+
+      void attemptPlayback();
+    };
+
+    audio.addEventListener("canplay", onCanPlay);
+    audio.addEventListener("loadeddata", onCanPlay);
+
+    void attemptPlayback().then((didPlay) => {
       if (didPlay || isDisposed) {
         return;
       }
 
       window.addEventListener("pointerdown", onFirstInteraction, { once: true });
+      window.addEventListener("click", onFirstInteraction, { once: true });
       window.addEventListener("keydown", onFirstInteraction, { once: true });
       window.addEventListener("touchstart", onFirstInteraction, { once: true });
     });
 
     return () => {
       isDisposed = true;
+      audio.removeEventListener("canplay", onCanPlay);
+      audio.removeEventListener("loadeddata", onCanPlay);
       window.removeEventListener("pointerdown", onFirstInteraction);
+      window.removeEventListener("click", onFirstInteraction);
       window.removeEventListener("keydown", onFirstInteraction);
       window.removeEventListener("touchstart", onFirstInteraction);
     };
