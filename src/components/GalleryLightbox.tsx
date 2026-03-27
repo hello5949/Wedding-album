@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Photo = {
+  mediaType: "image" | "video";
   alt: string;
   original: string;
   src: string;
@@ -10,14 +11,21 @@ type Photo = {
 
 type GalleryLightboxProps = {
   photos: Photo[];
+  bgmTracks: {
+    name: string;
+    src: string;
+    startIndex: number;
+  }[];
 };
 
 const swipeThreshold = 70;
 
-export default function GalleryLightbox({ photos }: GalleryLightboxProps) {
+export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const [isOriginalOpen, setIsOriginalOpen] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const currentTrackRef = useRef<string>("");
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -62,9 +70,65 @@ export default function GalleryLightbox({ photos }: GalleryLightboxProps) {
   };
 
   const activePhoto = photos[activeIndex];
+  const activeLabel =
+    activePhoto.alt || (activePhoto.mediaType === "video" ? "wedding video" : "wedding photo");
+  const activeTrackIndex =
+    bgmTracks.length > 0 ? Math.min(Math.floor(activeIndex / 4), bgmTracks.length - 1) : -1;
+  const activeTrack = activeTrackIndex >= 0 ? bgmTracks[activeTrackIndex] : null;
+  const isTrackStartPhoto = activeTrack?.startIndex === activeIndex;
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || !activeTrack) {
+      return;
+    }
+
+    if (currentTrackRef.current !== activeTrack.src) {
+      audio.src = activeTrack.src;
+      audio.load();
+      currentTrackRef.current = activeTrack.src;
+    }
+
+    let isDisposed = false;
+
+    const playAudio = async () => {
+      try {
+        await audio.play();
+        return true;
+      } catch {
+        return false;
+      }
+    };
+
+    const onFirstInteraction = () => {
+      if (isDisposed) {
+        return;
+      }
+
+      void playAudio();
+    };
+
+    void playAudio().then((didPlay) => {
+      if (didPlay || isDisposed) {
+        return;
+      }
+
+      window.addEventListener("pointerdown", onFirstInteraction, { once: true });
+      window.addEventListener("keydown", onFirstInteraction, { once: true });
+      window.addEventListener("touchstart", onFirstInteraction, { once: true });
+    });
+
+    return () => {
+      isDisposed = true;
+      window.removeEventListener("pointerdown", onFirstInteraction);
+      window.removeEventListener("keydown", onFirstInteraction);
+      window.removeEventListener("touchstart", onFirstInteraction);
+    };
+  }, [activeTrack]);
 
   return (
     <section className="carousel-shell" aria-label="Wedding gallery carousel">
+      {activeTrack ? <audio ref={audioRef} autoPlay loop preload="auto" /> : null}
       <div className="carousel-stage">
         <button
           type="button"
@@ -103,25 +167,36 @@ export default function GalleryLightbox({ photos }: GalleryLightboxProps) {
                 type="button"
                 className="carousel-image-button"
                 onClick={() => setIsOriginalOpen(true)}
-                aria-label={`Open full resolution version of ${activePhoto.alt}`}
+                aria-label={`Open full resolution version of ${activeLabel}`}
               >
-                <img
-                  src={activePhoto.src}
-                  alt={activePhoto.alt}
-                  className="carousel-image"
-                  loading="eager"
-                  decoding="async"
-                />
+                {activePhoto.mediaType === "video" ? (
+                  <video
+                    src={activePhoto.src}
+                    className="carousel-video"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="metadata"
+                  />
+                ) : (
+                  <img
+                    src={activePhoto.src}
+                    alt={activePhoto.alt}
+                    className="carousel-image"
+                    loading="eager"
+                    decoding="async"
+                  />
+                )}
               </button>
               <figcaption className="carousel-meta">
-                <div>
-                  <p className="carousel-index">
-                    {String(activeIndex + 1).padStart(2, "0")}
-                    <span> / {String(photos.length).padStart(2, "0")}</span>
-                  </p>
-                  <p className="carousel-caption">{activePhoto.alt}</p>
-                </div>
-                <p className="carousel-hint">Swipe, use arrow keys, or tap image for full resolution</p>
+                <p className="carousel-index">
+                  {String(activeIndex + 1).padStart(2, "0")}
+                  <span> / {String(photos.length).padStart(2, "0")}</span>
+                </p>
+                {isTrackStartPhoto ? (
+                  <p className="carousel-bgm-name">{activeTrack.name}</p>
+                ) : null}
               </figcaption>
             </motion.figure>
           </AnimatePresence>
@@ -144,16 +219,31 @@ export default function GalleryLightbox({ photos }: GalleryLightboxProps) {
             type="button"
             className={`thumbnail-card${index === activeIndex ? " is-active" : ""}`}
             onClick={() => goToIndex(index)}
-            aria-label={`View ${photo.alt}`}
+            aria-label={`View ${photo.alt || (photo.mediaType === "video" ? "video" : "photo")}`}
             aria-pressed={index === activeIndex}
           >
-            <img
-              src={photo.thumb}
-              alt=""
-              className="thumbnail-image"
-              loading="lazy"
-              decoding="async"
-            />
+            {photo.mediaType === "video" ? (
+              <div className="thumbnail-video-shell">
+                <img
+                  src={photo.thumb}
+                  alt=""
+                  className="thumbnail-image"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span className="thumbnail-video-badge" aria-hidden="true">
+                  Video
+                </span>
+              </div>
+            ) : (
+              <img
+                src={photo.thumb}
+                alt=""
+                className="thumbnail-image"
+                loading="lazy"
+                decoding="async"
+              />
+            )}
           </button>
         ))}
       </div>
@@ -184,22 +274,34 @@ export default function GalleryLightbox({ photos }: GalleryLightboxProps) {
               transition={{ duration: 0.22, ease: "easeOut" }}
               onClick={(event) => event.stopPropagation()}
             >
-              <img
-                src={activePhoto.original}
-                alt={activePhoto.alt}
-                className="original-image"
-                loading="eager"
-                decoding="async"
-              />
+              {activePhoto.mediaType === "video" ? (
+                <video
+                  src={activePhoto.original}
+                  className="original-video"
+                  controls
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                />
+              ) : (
+                <img
+                  src={activePhoto.original}
+                  alt={activePhoto.alt}
+                  className="original-image"
+                  loading="eager"
+                  decoding="async"
+                />
+              )}
               <figcaption className="original-meta">
-                <p className="original-caption">{activePhoto.alt}</p>
                 <a
                   className="original-link"
                   href={activePhoto.original}
                   target="_blank"
                   rel="noreferrer"
                 >
-                  Open Original File
+                  {activePhoto.mediaType === "video" ? "Open Video File" : "Open Original File"}
                 </a>
               </figcaption>
             </motion.figure>

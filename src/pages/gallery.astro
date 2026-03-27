@@ -1,6 +1,7 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
 import GalleryLightbox from "../components/GalleryLightbox";
+import { bgmTracks } from "../data/bgm";
 import { galleryPhotos } from "../data/gallery";
 import { withBase } from "../utils/with-base";
 
@@ -11,6 +12,10 @@ const photos = galleryPhotos.map((photo) => ({
   src: withBase(photo.src, base),
   thumb: withBase(photo.thumb, base),
 }));
+const tracks = bgmTracks.map((track) => ({
+  ...track,
+  src: withBase(track.src, base),
+}));
 ---
 
 <MainLayout
@@ -19,13 +24,9 @@ const photos = galleryPhotos.map((photo) => ({
 >
   <section class="gallery-header">
     <div>
-      <p class="section-label">相簿</p>
-      <h1>一張一張慢慢看，把每個瞬間留久一點。</h1>
+      <h1>WE'RE GETTING MARRIED.</h1>
     </div>
-    <p class="gallery-intro">
-      手機可左右滑動，桌機可用方向鍵或下方縮圖切換；點照片可打開原始畫質。
-    </p>
   </section>
 
-  <GalleryLightbox client:load photos={photos} />
+  <GalleryLightbox client:load photos={photos} bgmTracks={tracks} />
 </MainLayout>

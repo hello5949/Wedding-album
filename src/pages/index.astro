@@ -1,70 +1,29 @@
 ---
 import MainLayout from "../layouts/MainLayout.astro";
-import MotionHero from "../components/MotionHero";
-import { galleryPhotos, heroPhoto } from "../data/gallery";
+import GalleryLightbox from "../components/GalleryLightbox";
+import { bgmTracks } from "../data/bgm";
+import { galleryPhotos } from "../data/gallery";
 import { withBase } from "../utils/with-base";
 
 const base = import.meta.env.BASE_URL;
-const previewPhotos = galleryPhotos.slice(0, 6).map((photo) => ({
+const photos = galleryPhotos.map((photo) => ({
   ...photo,
-  src: withBase(photo.thumb, base),
+  original: withBase(photo.original, base),
+  src: withBase(photo.src, base),
+  thumb: withBase(photo.thumb, base),
 }));
-const heroSrc = withBase(heroPhoto.src, base);
+const tracks = bgmTracks.map((track) => ({
+  ...track,
+  src: withBase(track.src, base),
+}));
 ---
 
 <MainLayout
   title="婚紗相簿"
-  description="簡單留白的婚紗相簿，適合在任何裝置上安靜瀏覽。"
+  description="滑動式婚紗相簿。"
 >
-  <section class="hero-shell">
-    <div class="hero-media">
-      <img
-        src={heroSrc}
-        alt={heroPhoto.alt}
-        class="hero-image"
-        loading="eager"
-        decoding="async"
-      />
-    </div>
-    <div class="hero-copy">
-      <MotionHero
-        title="婚紗相簿"
-        eyebrow="把喜歡的樣子，好好留住。"
-        body="用簡單的版面，慢慢看完這一段屬於我們的光與風景。"
-      />
-    </div>
+  <section class="home-slogan">
+    <p class="home-slogan-text">WE'RE GETTING MARRIED.</p>
   </section>
-
-  <section class="section-grid">
-    <div class="section-copy">
-      <p class="section-label">關於</p>
-      <h2>把畫面留給照片，把情緒留給當下。</h2>
-      <p>
-        沒有太多裝飾，只有留白、光線，和那些值得反覆回看的瞬間。
-      </p>
-    </div>
-    <div class="section-copy">
-      <p class="section-label">瀏覽</p>
-      <p>
-        手機可滑動查看，桌機也能順暢切換；想看細節時，再點開原始畫質版本。
-      </p>
-      <div class="action-row">
-        <a class="button-primary" href={withBase("gallery/", base)}>開始瀏覽</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="preview-grid">
-    {previewPhotos.map((photo) => (
-      <figure class="preview-card">
-        <img
-          src={photo.src}
-          alt={photo.alt}
-          class="preview-image"
-          loading="lazy"
-          decoding="async"
-        />
-      </figure>
-    ))}
-  </section>
+  <GalleryLightbox client:load photos={photos} bgmTracks={tracks} />
 </MainLayout>

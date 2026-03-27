@@ -42,54 +42,17 @@ img {
   padding: 1.5rem;
 }
 
-.site-header,
-.site-footer,
 .site-main {
   width: min(1320px, calc(100vw - 3rem));
   margin: 0 auto;
 }
 
-.site-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 0 2rem;
-}
-
-.site-mark,
-.site-nav a {
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-size: 0.75rem;
-  color: var(--color-muted);
-}
-
-.site-nav {
-  display: flex;
-  gap: 1.25rem;
-}
-
 .site-main {
   display: grid;
-  gap: 5rem;
-  padding-bottom: 4rem;
+  gap: 2rem;
+  padding: 1rem 0 2.5rem;
 }
 
-.site-footer {
-  padding: 1.5rem 0 2rem;
-  color: var(--color-muted);
-  font-size: 0.85rem;
-  border-top: 1px solid var(--color-line);
-}
-
-.hero-shell {
-  display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
-  gap: clamp(1.5rem, 3vw, 4rem);
-  align-items: end;
-}
-
-.hero-media,
 .preview-card,
 .carousel-viewport,
 .thumbnail-card {
@@ -99,121 +62,42 @@ img {
   box-shadow: 0 24px 80px rgba(77, 54, 36, 0.08);
 }
 
-.hero-image {
-  width: 100%;
-  height: min(74vh, 920px);
-  object-fit: cover;
+.home-slogan {
+  display: flex;
+  justify-content: center;
+  padding: clamp(1rem, 2vw, 2rem) 0 0.25rem;
 }
 
-.hero-copy {
-  padding: clamp(0.5rem, 1vw, 1rem) 0 clamp(1rem, 2vw, 2.5rem);
-}
-
-.hero-eyebrow,
+.home-slogan-text,
 .section-label {
-  margin: 0 0 1rem;
+  margin: 0;
   color: var(--color-muted);
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 0.72rem;
 }
 
-.hero-title,
+.home-slogan-text,
 .section-copy h2,
 .gallery-header h1 {
   margin: 0;
-  font-family: "Cormorant Garamond", serif;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  line-height: 0.95;
+  font-family: "Bodoni Moda", "Cormorant Garamond", serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 0.9;
+  text-transform: uppercase;
+  text-align: center;
 }
 
-.hero-title {
-  font-size: clamp(4.5rem, 9vw, 8.75rem);
-}
-
-.hero-body,
-.section-copy p,
-.gallery-intro {
-  color: var(--color-muted);
-  line-height: 1.9;
-  font-size: 0.98rem;
-}
-
-.hero-body {
-  width: min(28rem, 100%);
-  margin: 1.5rem 0 0;
-}
-
-.section-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2rem;
-  padding: 0 0 1rem;
-}
-
-.section-copy {
-  padding: 2rem 0;
-  border-top: 1px solid var(--color-line);
-}
-
-.section-copy h2,
 .gallery-header h1 {
   font-size: clamp(2.6rem, 5vw, 4.5rem);
-  margin-bottom: 1.25rem;
-}
-
-.action-row {
-  padding-top: 1rem;
-}
-
-.button-primary {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 10rem;
-  padding: 0.95rem 1.4rem;
-  border-radius: 999px;
-  background: var(--color-text);
-  color: #f7f2eb;
-  transition:
-    transform 200ms ease,
-    opacity 200ms ease;
-}
-
-.button-primary:hover {
-  transform: translateY(-1px);
-  opacity: 0.92;
-}
-
-.preview-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.25rem;
-}
-
-.preview-image,
-.thumbnail-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 260ms ease;
-}
-
-.preview-card {
-  aspect-ratio: 4 / 5;
-}
-
-.preview-card:hover .preview-image,
-.thumbnail-card:hover .thumbnail-image {
-  transform: scale(1.02);
+  margin-bottom: 0;
 }
 
 .gallery-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 26rem);
-  gap: 2rem;
-  align-items: end;
+  display: flex;
+  justify-content: center;
+  padding-top: clamp(1rem, 2vw, 2rem);
 }
 
 .carousel-shell {
@@ -263,6 +147,17 @@ img {
   border-radius: 1rem;
 }
 
+.carousel-video,
+.original-video {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: contain;
+  object-position: center center;
+  border-radius: 1rem;
+  background: #000;
+}
+
 .carousel-meta {
   display: flex;
   justify-content: space-between;
@@ -282,6 +177,15 @@ img {
 
 .carousel-index span {
   opacity: 0.58;
+}
+
+.carousel-bgm-name {
+  margin: 0;
+  color: rgba(110, 101, 93, 0.92);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: right;
 }
 
 .carousel-caption {
@@ -333,6 +237,32 @@ img {
     opacity 180ms ease;
 }
 
+.thumbnail-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 260ms ease;
+}
+
+.thumbnail-video-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.thumbnail-video-badge {
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.7rem;
+  padding: 0.26rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(17, 13, 11, 0.68);
+  color: #f7f2eb;
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
 .thumbnail-card::after {
   content: "";
   position: absolute;
@@ -347,6 +277,10 @@ img {
 
 .thumbnail-card:not(.is-active) {
   opacity: 0.72;
+}
+
+.thumbnail-card:hover .thumbnail-image {
+  transform: scale(1.02);
 }
 
 .original-viewer {
@@ -388,6 +322,10 @@ img {
   border-radius: 1rem;
 }
 
+.original-video {
+  max-height: calc(100vh - 8rem);
+}
+
 .original-meta {
   display: flex;
   justify-content: space-between;
@@ -395,15 +333,8 @@ img {
   align-items: center;
 }
 
-.original-caption,
 .original-link {
   color: #f4ede5;
-}
-
-.original-caption {
-  margin: 0;
-  font-family: "Cormorant Garamond", serif;
-  font-size: clamp(1.1rem, 2vw, 1.5rem);
 }
 
 .original-link {
@@ -413,18 +344,6 @@ img {
 }
 
 @media (max-width: 960px) {
-  .hero-shell,
-  .section-grid,
-  .gallery-header,
-  .preview-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-image {
-    height: 60vh;
-  }
-
-  .preview-card,
   .thumbnail-card {
     aspect-ratio: 4 / 5;
   }
@@ -452,24 +371,13 @@ img {
     padding: 1rem;
   }
 
-  .site-header,
-  .site-footer,
   .site-main {
     width: min(100%, calc(100vw - 2rem));
   }
 
-  .site-header {
-    gap: 1rem;
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .hero-title {
-    font-size: clamp(3.2rem, 18vw, 5rem);
-  }
-
-  .gallery-intro {
-    font-size: 0.92rem;
+  .home-slogan-text,
+  .gallery-header h1 {
+    font-size: clamp(2.2rem, 10vw, 3.8rem);
   }
 
   .carousel-viewport {
