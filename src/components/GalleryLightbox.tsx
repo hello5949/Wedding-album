@@ -25,6 +25,7 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
   const [direction, setDirection] = useState(1);
   const [isOriginalOpen, setIsOriginalOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  const [volume, setVolume] = useState(0.3);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const currentTrackRef = useRef<string>("");
 
@@ -90,7 +91,7 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
       currentTrackRef.current = activeTrack.src;
     }
 
-    audio.volume = 0.6;
+    audio.volume = volume;
     audio.muted = isMuted;
 
     let isDisposed = false;
@@ -128,13 +129,28 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
       window.removeEventListener("keydown", onFirstInteraction);
       window.removeEventListener("touchstart", onFirstInteraction);
     };
-  }, [activeTrack, isMuted]);
+  }, [activeTrack, isMuted, volume]);
 
   return (
     <section className="carousel-shell" aria-label="Wedding gallery carousel">
       {activeTrack ? <audio ref={audioRef} autoPlay loop preload="auto" /> : null}
       {activeTrack ? (
         <div className="carousel-audio-controls">
+          <label className="audio-volume" aria-label="Background music volume">
+            <span className="audio-volume-label" aria-hidden="true">
+              Vol
+            </span>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              step="1"
+              value={Math.round(volume * 100)}
+              className="audio-volume-slider"
+              onChange={(event) => setVolume(Number(event.target.value) / 100)}
+              aria-label="Background music volume"
+            />
+          </label>
           <button
             type="button"
             className="audio-toggle"

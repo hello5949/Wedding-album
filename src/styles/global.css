@@ -107,7 +107,32 @@ img {
 
 .carousel-audio-controls {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.audio-volume {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.58rem 0.85rem;
+  border: 1px solid rgba(47, 41, 38, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.56);
+}
+
+.audio-volume-label {
+  color: var(--color-muted);
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.audio-volume-slider {
+  width: 6.5rem;
+  accent-color: #6e655d;
+  cursor: pointer;
 }
 
 .audio-toggle {
@@ -415,9 +440,21 @@ img {
     width: min(100%, calc(100vw - 2rem));
   }
 
-.home-slogan-text,
-.gallery-header h1 {
-  font-size: clamp(1.6rem, 6vw, 2.8rem);
+  .home-slogan-text,
+  .gallery-header h1 {
+    font-size: clamp(1.6rem, 6vw, 2.8rem);
+  }
+
+  .carousel-audio-controls {
+    gap: 0.55rem;
+  }
+
+  .audio-volume {
+    padding: 0.52rem 0.72rem;
+  }
+
+  .audio-volume-slider {
+    width: 4.8rem;
   }
 
   .carousel-viewport {
