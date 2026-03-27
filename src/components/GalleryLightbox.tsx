@@ -25,15 +25,60 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
   const [direction, setDirection] = useState(1);
   const [isOriginalOpen, setIsOriginalOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [volume, setVolume] = useState(0.3);
+  const [volume, setVolume] = useState(0.1);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const currentTrackRef = useRef<string>("");
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const gainNodeRef = useRef<GainNode | null>(null);
+  const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
+
+  const ensureAudioGraph = async () => {
+    const audio = audioRef.current;
+    if (!audio) {
+      return null;
+    }
+
+    const AudioContextCtor = window.AudioContext || (window as typeof window & {
+      webkitAudioContext?: typeof AudioContext;
+    }).webkitAudioContext;
+
+    if (!AudioContextCtor) {
+      return null;
+    }
+
+    if (!audioContextRef.current) {
+      audioContextRef.current = new AudioContextCtor();
+    }
+
+    if (!gainNodeRef.current) {
+      gainNodeRef.current = audioContextRef.current.createGain();
+    }
+
+    if (!sourceNodeRef.current) {
+      sourceNodeRef.current = audioContextRef.current.createMediaElementSource(audio);
+      sourceNodeRef.current.connect(gainNodeRef.current);
+      gainNodeRef.current.connect(audioContextRef.current.destination);
+    }
+
+    if (audioContextRef.current.state === "suspended") {
+      await audioContextRef.current.resume();
+    }
+
+    return {
+      audioContext: audioContextRef.current,
+      gainNode: gainNodeRef.current,
+    };
+  };
 
   const updateVolume = (nextVolume: number) => {
     setVolume(nextVolume);
 
     if (audioRef.current) {
-      audioRef.current.volume = nextVolume;
+      audioRef.current.volume = 1;
+    }
+
+    if (gainNodeRef.current) {
+      gainNodeRef.current.gain.value = isMuted ? 0 : nextVolume;
     }
   };
 
@@ -99,13 +144,25 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
       currentTrackRef.current = activeTrack.src;
     }
 
-    audio.volume = volume;
-    audio.muted = isMuted;
+    audio.volume = 1;
+    audio.muted = false;
+
+    const syncGain = async () => {
+      const graph = await ensureAudioGraph();
+
+      if (graph) {
+        graph.gainNode.gain.value = isMuted ? 0 : volume;
+        return;
+      }
+
+      audio.volume = isMuted ? 0 : volume;
+    };
 
     let isDisposed = false;
 
     const playAudio = async () => {
       try {
+        await syncGain();
         await audio.play();
         return true;
       } catch {
