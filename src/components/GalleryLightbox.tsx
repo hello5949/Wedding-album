@@ -32,6 +32,12 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
   const gainNodeRef = useRef<GainNode | null>(null);
   const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
 
+  useEffect(() => {
+    if (window.matchMedia("(max-width: 720px)").matches) {
+      setIsMuted(true);
+    }
+  }, []);
+
   const ensureAudioGraph = async () => {
     const audio = audioRef.current;
     if (!audio) {
