@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --color-bg: #f5efe8;
-  --color-bg-strong: #efe5db;
-  --color-surface: rgba(255, 255, 255, 0.52);
-  --color-text: #2f2926;
-  --color-muted: #6e655d;
-  --color-line: rgba(47, 41, 38, 0.12);
+  --color-bg: #f6f0e6;
+  --color-bg-strong: #eee5d9;
+  --color-surface: rgba(255, 252, 247, 0.66);
+  --color-text: #312926;
+  --color-muted: #81756d;
+  --color-accent: #b89b92;
+  --color-line: rgba(49, 41, 38, 0.12);
 }
 
 * {
@@ -15,10 +16,10 @@
 
 html {
   background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.88), transparent 34%),
-    linear-gradient(180deg, #fbf7f2 0%, var(--color-bg) 44%, #f1e8de 100%);
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.76), transparent 32%),
+    linear-gradient(180deg, #fbf7f2 0%, var(--color-bg) 44%, #f0e8dd 100%);
   color: var(--color-text);
-  font-family: "Noto Sans TC", sans-serif;
+  font-family: "Noto Serif TC", serif;
   scroll-behavior: smooth;
 }
 
@@ -39,18 +40,15 @@ img {
 
 .page-shell {
   min-height: 100vh;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 3rem;
 }
 
 .site-main {
   width: min(1320px, calc(100vw - 3rem));
   margin: 0 auto;
-}
-
-.site-main {
   display: grid;
-  gap: 2rem;
-  padding: 1rem 0 2.5rem;
+  gap: 3.25rem;
+  padding: 1.5rem 0 2.5rem;
 }
 
 .preview-card,
@@ -59,22 +57,339 @@ img {
   overflow: hidden;
   border-radius: 1.5rem;
   background: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 24px 80px rgba(77, 54, 36, 0.08);
+  box-shadow: 0 24px 80px rgba(77, 54, 36, 0.06);
+}
+
+.hero-kicker,
+.section-kicker,
+.home-slogan-text,
+.section-label,
+.carousel-index,
+.carousel-hint,
+.carousel-bgm-name,
+.audio-volume-label,
+.original-link {
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.72rem;
+}
+
+.invite-hero,
+.story-section,
+.schedule-section {
+  position: relative;
+}
+
+.invite-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: center;
+  min-height: min(88vh, 900px);
+}
+
+.hero-copy {
+  display: grid;
+  gap: 1rem;
+  padding-left: clamp(0rem, 3vw, 2rem);
+}
+
+.hero-kicker,
+.section-kicker {
+  margin: 0;
+}
+
+.hero-script {
+  margin: 0;
+  color: var(--color-accent);
+  font-family: "Petit Formal Script", cursive;
+  font-size: clamp(4.8rem, 12vw, 8.8rem);
+  font-weight: 400;
+  line-height: 0.9;
+}
+
+.hero-name-blob {
+  width: min(100%, 330px);
+  display: grid;
+  justify-items: center;
+  gap: 0.7rem;
+  padding: 2.8rem 2rem;
+  border-radius: 42% 58% 44% 56% / 49% 42% 58% 51%;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.hero-names,
+.hero-date,
+.hero-note,
+.hero-save {
+  margin: 0;
+}
+
+.hero-names {
+  font-size: clamp(1.45rem, 3vw, 2.1rem);
+  letter-spacing: 0.08em;
+}
+
+.hero-heart {
+  color: #d7a39b;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.hero-date {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.hero-note {
+  max-width: 25rem;
+  color: var(--color-muted);
+  line-height: 1.9;
+  font-size: 1rem;
+}
+
+.hero-frame-shell {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+}
+
+.hero-hearts {
+  color: #d26d6d;
+  font-size: 1.5rem;
+  letter-spacing: 0.45rem;
+}
+
+.hero-arch-frame {
+  position: relative;
+  margin: 0;
+  width: min(100%, 380px);
+  aspect-ratio: 0.76;
+  padding: 1.1rem;
+  border: 1px solid rgba(49, 41, 38, 0.22);
+  border-radius: 12rem 12rem 0 0;
+  background: rgba(255, 250, 245, 0.54);
+  box-shadow: 0 24px 70px rgba(66, 47, 33, 0.08);
+}
+
+.hero-arch-frame::before,
+.hero-arch-frame::after {
+  content: "✦";
+  position: absolute;
+  top: 50%;
+  color: rgba(49, 41, 38, 0.46);
+  font-size: 1.2rem;
+  transform: translateY(-50%);
+}
+
+.hero-arch-frame::before {
+  left: -0.8rem;
+}
+
+.hero-arch-frame::after {
+  right: -0.8rem;
+}
+
+.hero-portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10rem 10rem 0 0;
+}
+
+.hero-save {
+  color: rgba(129, 117, 109, 0.82);
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.story-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(340px, 460px);
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+.story-copy {
+  display: grid;
+  gap: 1.8rem;
+  max-width: 34rem;
+  padding-left: clamp(0rem, 3vw, 0.5rem);
+}
+
+.story-copy p,
+.schedule-overlay p {
+  margin: 0;
+  line-height: 2;
+  font-size: 1rem;
+}
+
+.story-photos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.84fr);
+  gap: 1.4rem;
+  align-items: start;
+}
+
+.story-photo-card {
+  margin: 0;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.48);
+  box-shadow: 0 16px 52px rgba(66, 47, 33, 0.08);
+}
+
+.story-photo-card.is-tall {
+  aspect-ratio: 0.77;
+  border-radius: 0;
+}
+
+.story-photo-card.is-offset {
+  aspect-ratio: 0.72;
+  margin-top: 4.5rem;
+  border-radius: 0;
+}
+
+.story-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.schedule-section {
+  min-height: min(92vh, 920px);
+  display: grid;
+  place-items: center;
+}
+
+.schedule-poster {
+  position: relative;
+  width: min(100%, 1080px);
+  aspect-ratio: 1.56;
+}
+
+.schedule-backdrop {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  box-shadow: 0 20px 70px rgba(66, 47, 33, 0.08);
+}
+
+.schedule-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 34%;
+  filter: saturate(0.45) contrast(0.86) brightness(0.8);
+}
+
+.schedule-overlay {
+  position: absolute;
+  inset: 0;
+  color: #fffdf9;
+  pointer-events: none;
+}
+
+.schedule-date-label {
+  margin: 0;
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2rem, 4vw, 2.7rem);
+  line-height: 1;
+  position: absolute;
+  text-shadow: 0 2px 16px rgba(20, 16, 14, 0.2);
+}
+
+.schedule-date-label {
+  left: 2.2rem;
+  bottom: 16.2rem;
+}
+
+.schedule-year {
+  position: absolute;
+  top: 0.9rem;
+  left: 50%;
+  margin: 0;
+  color: rgba(255, 252, 247, 0.98);
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-shadow: 0 2px 12px rgba(20, 16, 14, 0.18);
+  text-align: center;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.schedule-calendar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 420px;
+  padding: 3rem 1.4rem 1rem;
+  background: rgba(255, 250, 245, 0.28);
+  backdrop-filter: blur(4px);
+}
+
+.schedule-overlay h2 {
+  position: absolute;
+  right: 6%;
+  top: 50%;
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  line-height: 1.2;
+  letter-spacing: 0.5em;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: translateY(-50%);
+  text-shadow: 0 2px 16px rgba(20, 16, 14, 0.22);
+}
+
+.calendar-weeks {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.3rem;
+}
+
+.calendar-grid--header {
+  margin-bottom: 0.7rem;
+}
+
+.calendar-grid--header span,
+.calendar-day {
+  display: grid;
+  place-items: center;
+  min-height: 2.4rem;
+  color: #fffdf9;
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+}
+
+.calendar-day.is-empty {
+  opacity: 0;
+}
+
+.calendar-day.is-highlighted {
+  color: var(--color-text);
+  background: rgba(255, 248, 238, 0.9);
+  border-radius: 999px;
+  font-weight: 600;
 }
 
 .home-slogan {
   display: flex;
   justify-content: center;
-  padding: clamp(1rem, 2vw, 2rem) 0 0.25rem;
-}
-
-.home-slogan-text,
-.section-label {
-  margin: 0;
-  color: var(--color-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  font-size: 0.72rem;
+  padding: 0.25rem 0;
 }
 
 .home-slogan-text,
@@ -123,10 +438,7 @@ img {
 }
 
 .audio-volume-label {
-  color: var(--color-muted);
-  font-size: 0.64rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  margin: 0;
 }
 
 .audio-volume-slider {
@@ -233,12 +545,9 @@ img {
 }
 
 .carousel-index,
-.carousel-hint {
+.carousel-hint,
+.carousel-bgm-name {
   margin: 0;
-  color: var(--color-muted);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  font-size: 0.72rem;
 }
 
 .carousel-index span {
@@ -246,11 +555,9 @@ img {
 }
 
 .carousel-bgm-name {
-  margin: 0;
   color: rgba(110, 101, 93, 0.92);
   font-size: 0.68rem;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
   text-align: right;
 }
 
@@ -401,15 +708,28 @@ img {
 
 .original-link {
   color: #f4ede5;
-}
-
-.original-link {
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   font-size: 0.72rem;
 }
 
 @media (max-width: 960px) {
+  .invite-hero,
+  .story-section {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy,
+  .story-copy {
+    padding-left: 0;
+  }
+
+  .hero-frame-shell {
+    order: -1;
+  }
+
+  .story-photos {
+    max-width: 34rem;
+  }
+
   .thumbnail-card {
     aspect-ratio: 4 / 5;
   }
@@ -434,45 +754,180 @@ img {
 
 @media (max-width: 720px) {
   .page-shell {
-    padding: 1rem;
+    padding: 0.9rem 0.9rem 2rem;
   }
 
   .site-main {
     width: min(100%, calc(100vw - 2rem));
+    gap: 2.75rem;
+  }
+
+  .invite-hero {
+    min-height: auto;
+    gap: 1.2rem;
+    justify-items: center;
+  }
+
+  .hero-script {
+    font-size: clamp(3.5rem, 17vw, 5rem);
+    text-align: center;
+  }
+
+  .hero-copy {
+    justify-items: center;
+    gap: 0.8rem;
+    text-align: center;
+  }
+
+  .hero-name-blob {
+    width: min(100%, 16rem);
+    max-width: 16rem;
+    gap: 0.45rem;
+    padding: 1.8rem 1.2rem;
+  }
+
+  .hero-arch-frame {
+    width: min(100%, 16rem);
+    padding: 0.7rem;
+  }
+
+  .hero-names {
+    font-size: 1.28rem;
+  }
+
+  .hero-date {
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+  }
+
+  .hero-note {
+    max-width: 17rem;
+    font-size: 0.88rem;
+    line-height: 1.75;
+  }
+
+  .hero-save {
+    font-size: 1.2rem;
+  }
+
+  .story-section {
+    gap: 1.15rem;
+  }
+
+  .story-copy {
+    gap: 1.1rem;
+    padding: 1.2rem 1rem;
+    background: rgba(255, 255, 255, 0.38);
+  }
+
+  .story-copy p {
+    font-size: 0.92rem;
+    line-height: 1.9;
+  }
+
+  .story-photos {
+    grid-template-columns: 1.08fr 0.78fr;
+    gap: 0.7rem;
+    width: 100%;
+  }
+
+  .story-photo-card.is-offset {
+    margin-top: 1.4rem;
+  }
+
+  .schedule-section {
+    min-height: auto;
+  }
+
+  .schedule-backdrop {
+    width: 100%;
+    height: 100%;
+  }
+
+  .schedule-overlay {
+    padding: 0;
+  }
+
+  .schedule-poster {
+    width: 100%;
+    aspect-ratio: 0.92;
+    height: auto;
+    max-height: 40rem;
+  }
+
+  .schedule-date-label {
+    left: 1rem;
+    bottom: 8.65rem;
+    font-size: 1.5rem;
+  }
+
+  .schedule-year {
+    top: 0.6rem;
+    left: 50%;
+    font-size: 1rem;
+  }
+
+  .schedule-overlay h2 {
+    right: 0.65rem;
+    top: 0.8rem;
+    transform: none;
+    font-size: 1.15rem;
+    line-height: 1.1;
+    letter-spacing: 0.28em;
+  }
+
+  .schedule-calendar {
+    left: 0;
+    right: auto;
+    bottom: 0;
+    width: min(100%, 15.2rem);
+    padding: 2rem 0.75rem 0.75rem;
+  }
+
+  .calendar-grid--header span,
+  .calendar-day {
+    min-height: 1.45rem;
+    font-size: 0.78rem;
   }
 
   .home-slogan-text,
   .gallery-header h1 {
-    font-size: clamp(1.3rem, 5vw, 2.2rem);
+    font-size: clamp(1.05rem, 4vw, 1.45rem);
   }
 
   .carousel-audio-controls {
-    gap: 0.55rem;
+    justify-content: space-between;
+    gap: 0.45rem;
+    flex-wrap: wrap;
   }
 
   .audio-volume {
-    padding: 0.52rem 0.72rem;
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0.45rem 0.62rem;
   }
 
   .audio-volume-slider {
-    width: 4.8rem;
+    width: 100%;
+    max-width: 6rem;
   }
 
   .carousel-viewport {
-    min-height: 66vh;
-    border-radius: 1.15rem;
+    min-height: 52vh;
+    border-radius: 1rem;
   }
 
   .carousel-figure {
-    padding: 0.75rem;
+    padding: 0.65rem;
   }
 
   .carousel-image {
-    border-radius: 0.85rem;
+    border-radius: 0.75rem;
   }
 
   .carousel-thumbnails {
-    grid-auto-columns: 34vw;
+    grid-auto-columns: 27vw;
+    gap: 0.55rem;
   }
 
   .original-viewer {
@@ -482,5 +937,57 @@ img {
   .original-meta {
     align-items: flex-start;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 420px) {
+  .site-main {
+    gap: 2.35rem;
+  }
+
+  .hero-script {
+    font-size: 3.35rem;
+  }
+
+  .hero-name-blob {
+    width: 14.8rem;
+    max-width: 14.8rem;
+  }
+
+  .story-copy {
+    padding: 1rem 0.85rem;
+  }
+
+  .schedule-poster {
+    aspect-ratio: 0.88;
+  }
+
+  .schedule-overlay h2 {
+    right: 0.45rem;
+    font-size: 1.02rem;
+    letter-spacing: 0.22em;
+  }
+
+  .schedule-calendar {
+    width: min(100%, 14.25rem);
+  }
+
+  .schedule-date-label {
+    bottom: 8.15rem;
+    font-size: 1.35rem;
+  }
+
+  .calendar-grid--header span,
+  .calendar-day {
+    min-height: 1.3rem;
+    font-size: 0.74rem;
+  }
+
+  .carousel-viewport {
+    min-height: 48vh;
+  }
+
+  .carousel-thumbnails {
+    grid-auto-columns: 29vw;
   }
 }

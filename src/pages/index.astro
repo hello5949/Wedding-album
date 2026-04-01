@@ -2,7 +2,7 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import GalleryLightbox from "../components/GalleryLightbox";
 import { bgmTracks } from "../data/bgm";
-import { galleryPhotos } from "../data/gallery";
+import { galleryPhotos, heroPhoto } from "../data/gallery";
 import { withBase } from "../utils/with-base";
 
 const base = import.meta.env.BASE_URL;
@@ -16,14 +16,122 @@ const tracks = bgmTracks.map((track) => ({
   ...track,
   src: withBase(track.src, base),
 }));
+
+const findPhoto = (filename: string) =>
+  photos.find((photo) => photo.src.endsWith(filename)) ?? heroPhoto;
+
+const welcomePhoto = {
+  ...heroPhoto,
+  src: withBase(heroPhoto.src, base),
+  original: withBase(heroPhoto.original, base),
+  thumb: withBase(heroPhoto.thumb, base),
+};
+const invitationPhotoA = findPhoto("41ooxx-00482.jpg");
+const invitationPhotoB = findPhoto("41ooxx-00538.jpg");
+const schedulePhoto = withBase("photos/web/41ooxx-00310.jpg", base);
+
+const calendarLabels = ["日", "一", "二", "三", "四", "五", "六"];
+const calendarWeeks = [
+  ["", "", "", "", "", "1", "2"],
+  ["3", "4", "5", "6", "7", "8", "9"],
+  ["10", "11", "12", "13", "14", "15", "16"],
+  ["17", "18", "19", "20", "21", "22", "23"],
+  ["24", "25", "26", "27", "28", "29", "30"],
+  ["31", "", "", "", "", "", ""],
+];
 ---
 
 <MainLayout
   title="婚紗相簿"
   description="滑動式婚紗相簿。"
 >
+  <section class="invite-hero">
+    <div class="hero-copy">
+      <p class="hero-kicker">WE'RE GETTING MARRIED</p>
+      <h1 class="hero-script">Wedding</h1>
+      <div class="hero-name-blob">
+        <p class="hero-names">吳俊融</p>
+        <span class="hero-heart" aria-hidden="true">♡</span>
+        <p class="hero-names">張珈菱</p>
+      </div>
+      <p class="hero-date">2026.05.09 SAT</p>
+      <p class="hero-note">很期待這一天，你來見證我們的重要時刻。</p>
+    </div>
+    <div class="hero-frame-shell">
+      <div class="hero-hearts" aria-hidden="true">♡ ♡ ♡</div>
+      <figure class="hero-arch-frame">
+        <img
+          src={welcomePhoto.src}
+          alt={welcomePhoto.alt}
+          class="hero-portrait"
+          loading="eager"
+        />
+      </figure>
+      <p class="hero-save">Save the date</p>
+    </div>
+  </section>
+
+  <section class="story-section">
+    <div class="story-copy">
+      <p>親愛的家人與朋友：</p>
+      <p>
+        你是參與過我們生活的人
+        <br />
+        曾經，我的生命中有一段是屬於我們的回憶
+        <br />
+        謝謝你的陪伴讓我的人生更加多采多姿
+      </p>
+      <p>
+        如今，我將前往人生下一個階段
+        <br />
+        誠摯邀請你來見證我們
+        <br />
+        請蒞臨我們的婚禮，與我們共創永恆的幸福時刻！
+      </p>
+    </div>
+    <div class="story-photos" aria-label="婚禮邀請照片">
+      <figure class="story-photo-card is-tall">
+        <img src={invitationPhotoA.src} alt={invitationPhotoA.alt} class="story-photo" loading="lazy" />
+      </figure>
+      <figure class="story-photo-card is-offset">
+        <img src={invitationPhotoB.src} alt={invitationPhotoB.alt} class="story-photo" loading="lazy" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="schedule-section">
+    <div class="schedule-poster">
+      <div class="schedule-backdrop">
+        <img src={schedulePhoto} alt="婚禮流程主視覺" class="schedule-image" loading="lazy" />
+      </div>
+      <div class="schedule-overlay">
+        <p class="schedule-date-label">05/09</p>
+        <h2>好久不見，婚禮見</h2>
+        <div class="schedule-calendar" aria-label="2026 年 5 月月曆">
+          <p class="schedule-year">2026</p>
+          <div class="calendar-grid calendar-grid--header">
+            {calendarLabels.map((label) => (
+              <span>{label}</span>
+            ))}
+          </div>
+          <div class="calendar-weeks">
+            {calendarWeeks.map((week) => (
+              <div class="calendar-grid">
+                {week.map((day) => (
+                  <span class:list={["calendar-day", day === "9" && "is-highlighted", day === "" && "is-empty"]}>
+                    {day}
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="home-slogan">
-    <p class="home-slogan-text">WE'RE GETTING MARRIED.</p>
+    <p class="home-slogan-text">Photo gallery</p>
   </section>
   <GalleryLightbox client:load photos={photos} bgmTracks={tracks} />
 </MainLayout>
