@@ -45,21 +45,21 @@ const calendarWeeks = [
   title="婚紗相簿"
   description="滑動式婚紗相簿。"
 >
-  <section class="invite-hero">
+  <section class="invite-hero reveal-section reveal-visible">
     <div class="hero-copy">
-      <p class="hero-kicker">WE'RE GETTING MARRIED</p>
-      <h1 class="hero-script">Wedding</h1>
-      <div class="hero-name-blob">
+      <p class="hero-kicker reveal-item reveal-delay-1">WE'RE GETTING MARRIED</p>
+      <h1 class="hero-script reveal-item reveal-delay-2">Wedding</h1>
+      <div class="hero-name-blob reveal-item reveal-delay-3">
         <p class="hero-names">吳俊融</p>
         <span class="hero-heart" aria-hidden="true">♡</span>
         <p class="hero-names">張珈菱</p>
       </div>
-      <p class="hero-date">2026.05.09 SAT</p>
-      <p class="hero-note">很期待這一天，你來見證我們的重要時刻。</p>
+      <p class="hero-date reveal-item reveal-delay-4">2026.05.09 SAT</p>
+      <p class="hero-note reveal-item reveal-delay-5">很期待這一天，你來見證我們的重要時刻。</p>
     </div>
-    <div class="hero-frame-shell">
+    <div class="hero-frame-shell reveal-item reveal-delay-3">
       <div class="hero-hearts" aria-hidden="true">♡ ♡ ♡</div>
-      <figure class="hero-arch-frame">
+      <figure class="hero-arch-frame hero-frame-float">
         <img
           src={welcomePhoto.src}
           alt={welcomePhoto.alt}
@@ -71,8 +71,8 @@ const calendarWeeks = [
     </div>
   </section>
 
-  <section class="story-section">
-    <div class="story-copy">
+  <section class="story-section reveal-section" data-reveal>
+    <div class="story-copy reveal-item reveal-delay-1">
       <p>親愛的家人與朋友：</p>
       <p>
         你是參與過我們生活的人
@@ -89,18 +89,18 @@ const calendarWeeks = [
         請蒞臨我們的婚禮，與我們共創永恆的幸福時刻！
       </p>
     </div>
-    <div class="story-photos" aria-label="婚禮邀請照片">
-      <figure class="story-photo-card is-tall">
+    <div class="story-photos reveal-item reveal-delay-2" aria-label="婚禮邀請照片">
+      <figure class="story-photo-card is-tall story-photo-lift">
         <img src={invitationPhotoA.src} alt={invitationPhotoA.alt} class="story-photo" loading="lazy" />
       </figure>
-      <figure class="story-photo-card is-offset">
+      <figure class="story-photo-card is-offset story-photo-lift">
         <img src={invitationPhotoB.src} alt={invitationPhotoB.alt} class="story-photo" loading="lazy" />
       </figure>
     </div>
   </section>
 
-  <section class="schedule-section">
-    <div class="schedule-poster">
+  <section class="schedule-section reveal-section" data-reveal>
+    <div class="schedule-poster reveal-item reveal-delay-1">
       <div class="schedule-backdrop">
         <img src={schedulePhoto} alt="婚禮流程主視覺" class="schedule-image" loading="lazy" />
       </div>
@@ -108,7 +108,10 @@ const calendarWeeks = [
         <p class="schedule-date-label">05/09</p>
         <h2>好久不見，婚禮見</h2>
         <div class="schedule-calendar" aria-label="2026 年 5 月月曆">
-          <p class="schedule-year">2026</p>
+          <div class="schedule-calendar-meta">
+            <p class="schedule-year">2026</p>
+            <p class="schedule-month">5月</p>
+          </div>
           <div class="calendar-grid calendar-grid--header">
             {calendarLabels.map((label) => (
               <span>{label}</span>
@@ -135,3 +138,20 @@ const calendarWeeks = [
   </section>
   <GalleryLightbox client:load photos={photos} bgmTracks={tracks} />
 </MainLayout>
+
+<script>
+  if (typeof window !== "undefined" && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add("reveal-visible");
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.22, rootMargin: "0px 0px -8% 0px" },
+    );
+
+    document.querySelectorAll("[data-reveal]").forEach((section) => observer.observe(section));
+  }
+</script>
