@@ -223,6 +223,7 @@ export default function GalleryLightbox({ photos, bgmTracks }: GalleryLightboxPr
       {activeTrack ? <audio ref={audioRef} autoPlay loop preload="auto" /> : null}
       {activeTrack ? (
         <div className="carousel-audio-controls">
+          <p className="audio-hint">記得開音樂喔!</p>
           <label
             className="audio-volume"
             aria-label="Background music volume"
